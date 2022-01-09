@@ -2,6 +2,10 @@
 Creates menu with anchors in article from H2 headings
 
 ``` html
+<script src="https://cdn.jsdelivr.net/gh/darangonaut/Menusio@master/menusio.js"></script>
+```
+
+``` html
 
 <script src="menusio.js"></script>
 <script type="text/javascript">
