@@ -3,7 +3,7 @@ Creates menu with anchors in article from H2 headings
 
 ``` html
 
-<script src="menusio.js "></script>
+<script src="menusio.js"></script>
 <script type="text/javascript">
     menusio.build(
         {
