@@ -8,41 +8,40 @@
 <body>
 
     <div id="js-main-content">
+        <h1>HLAVY NADPIS H1</h1>
         <ol id="js-menu-list"></ol>
+
         <h2>Nam non gravida nulla. Curabitur</h2>
         <p></p>
-
         <h2>Donec rhoncus eget tortor nec</h2>
         <p></p>
-
         <h2>Aliquam tempor ex non lacus</h2>
         <p></p>
-
         <h2>Nunc a augue quis nisl</h2>
         <p></p>
-
         <h2>Aenean tristique sollicitudin lacus</h2>
         <p></p>
-
         <h2>Renean tristique sollicitudin lacus</h2>
         <p></p>
-
         <h3>Xenean tristique sollicitudin</h3>
         <p></p>
-
         <h3>Uenean tristique sollicitudin</h3>
         <p></p>
-
         <h2>Penean tristique sollicitudin lacus</h2>
         <p></p>
-        
     </div>
 </body>
 
 <script src="menusio-p.js "></script>
 <script src="menusio.js "></script>
 <script type="text/javascript">
-    menusio.init(["js-main-content", "js-menu-list"]);
-    menusio.build();
- </script>
+    menusio.build(
+        {
+            idArticle: "js-main-content",
+            idList: "js-menu-list",
+            selectors: "h2, h3",
+        }
+    );
+</script>
+
 </html>

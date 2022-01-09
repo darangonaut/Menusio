@@ -3,7 +3,7 @@ html {
     font-family: 'Open Sans', sans-serif;
     scroll-behavior: smooth;
     background-color: black;
-    color: white;
+    color: rgb(201, 201, 201);
     padding: 50px;
     font-size: 18px;
     line-height: 1.5;
@@ -14,9 +14,23 @@ body {
     margin: 0 auto;
 }
 
-h2 {
-    font-size: 2.5rem;
+h2 a {
+    font-size: 2rem;
     color: yellowgreen;
+}
+
+h3 a {
+    font-size: 1.6rem;
+    color: yellowgreen;
+}
+
+h2 a::before, h3 a::before {
+    content: "#";
+    position: absolute;
+    width: 2rem;
+    margin-left: -2rem;
+    color: #999;
+    font-weight: 100;
 }
 
 ol li {
@@ -26,9 +40,15 @@ ol li {
 }
 
 a {
-    color: aqua;
+    color: rgb(0, 112, 112);
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
 }
 
+/*
 ol { counter-reset: item }
 li{ display: block }
 li:before { content: counters(item, ".") " "; counter-increment: item }
+*/
