@@ -1,10 +1,26 @@
 var menusio = menusio || ((() => {
     return {
         build(arg) {
-            const main = document.getElementById(arg.idArticle);
+            const main = document.querySelector(arg.article);
             if (main !== null) {
+                const listType = arg.ordered === true ? "ol" : "ul";
+
+                if (arg.selectorBeforMenu === null || arg.selectorBeforMenu === "" || arg.selectorBeforMenu === undefined) {
+                    arg.selectorBeforMenu = "h1";
+                }
+
+                let selectorBeforMenu = main.querySelector(arg.selectorBeforMenu);
+
+                if (selectorBeforMenu === null) {
+                    selectorBeforMenu = main.querySelector("h1");
+                }
+
+                const listMenu = document.createElement(listType);
+
+                selectorBeforMenu.parentNode.insertBefore(listMenu, selectorBeforMenu.nextSibling);
+
                 const list = main.querySelectorAll(arg.selectors);
-                const menuList = document.getElementById(arg.idList);
+                const menuList = main.querySelector(listType);
 
                 for (let i = 0; i < list.length; i++) {
                     const link = document.createElement("a");

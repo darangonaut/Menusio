@@ -1,35 +1,40 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/marx-css/css/marx.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-    <div id="js-main-content">
-        <h1>HLAVY NADPIS H1</h1>
-        <ol id="js-menu-list"></ol>
-
-        <h2>Nam non gravida nulla. Curabitur</h2>
-        <p></p>
-        <h2>Donec rhoncus eget tortor nec</h2>
-        <p></p>
-        <h2>Aliquam tempor ex non lacus</h2>
-        <p></p>
-        <h2>Nunc a augue quis nisl</h2>
-        <p></p>
-        <h2>Aenean tristique sollicitudin lacus</h2>
-        <p></p>
-        <h2>Renean tristique sollicitudin lacus</h2>
-        <p></p>
-        <h3>Xenean tristique sollicitudin</h3>
-        <p></p>
-        <h3>Uenean tristique sollicitudin</h3>
-        <p></p>
-        <h2>Penean tristique sollicitudin lacus</h2>
-        <p></p>
-    </div>
+    <main>
+        <div id="js-main-content">
+            <h1>Pariatur magni non dolorem, atque impedit obcaecati dolorum!</h1>
+            <h2>Nam non gravida nulla. Curabitur</h2>
+            <p></p>
+            <img src="https://picsum.photos/600/200?grayscale&random=1" alt="random image 1">
+            <h2>Donec rhoncus eget tortor nec</h2>
+            <p></p>
+            <img src="https://picsum.photos/600/200?grayscale&random=2" alt="random image 2">
+            <h2>Aliquam tempor ex non lacus</h2>
+            <p></p>
+            <img src="https://picsum.photos/600/200?grayscale&random=3" alt="random image 3">
+            <h2>Nunc a augue quis nisl</h2>
+            <p></p>
+            <img src="https://picsum.photos/600/200?grayscale&random=4" alt="random image 4">
+            <h2>Aenean tristique sollicitudin lacus</h2>
+            <p></p>
+            <img src="https://picsum.photos/600/200?grayscale&random=5" alt="random image 5">
+            <h2>Renean tristique sollicitudin lacus</h2>
+            <p></p>
+            <img src="https://picsum.photos/600/200?grayscale&random=6" alt="random image 6">
+            <h3>Xenean tristique sollicitudin</h3>
+            <p></p>
+            <h3>Uenean tristique sollicitudin</h3>
+            <p></p>
+            <h2>Penean tristique sollicitudin lacus</h2>
+            <p></p>
+        </div>
+    </main>
 </body>
 
 <script src="menusio-p.js "></script>
@@ -37,9 +42,10 @@
 <script type="text/javascript">
     menusio.build(
         {
-            idArticle: "js-main-content",
-            idList: "js-menu-list",
-            selectors: "h2, h3",
+            article: "main", // name or id or class of the article element
+            ordered: true,  // true or false
+            selectors: "h2", // h2,h3,h4,h5,h6
+            selectorBeforMenu: "h1", 
         }
     );
 </script>

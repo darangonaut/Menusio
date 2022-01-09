@@ -1,27 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 html {
-    font-family: 'Open Sans', sans-serif;
     scroll-behavior: smooth;
-    background-color: black;
-    color: rgb(201, 201, 201);
-    padding: 50px;
-    font-size: 18px;
-    line-height: 1.5;
 }
 
-body {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-h2 a {
-    font-size: 2rem;
-    color: yellowgreen;
-}
-
-h3 a {
-    font-size: 1.6rem;
-    color: yellowgreen;
+ol,li{
+    padding-left: 1rem;
 }
 
 h2 a::before, h3 a::before {
@@ -29,23 +11,15 @@ h2 a::before, h3 a::before {
     position: absolute;
     width: 2rem;
     margin-left: -2rem;
-    color: #999;
+    color: rgb(206, 206, 206);
     font-weight: 100;
-}
-
-ol li {
-    margin-left: -20px;
-    margin-bottom: 8px;
-    font-size: 20px;
-}
-
-a {
-    color: rgb(0, 112, 112);
     text-decoration: none;
 }
-a:hover{
-    text-decoration: underline;
+
+img{
+    width: 100%;
 }
+
 
 /*
 ol { counter-reset: item }
