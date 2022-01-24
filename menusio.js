@@ -16,11 +16,12 @@ var menusio = menusio || ((() => {
                 }
 
                 const listMenu = document.createElement(listType);
+                listMenu.setAttribute("id", "js-menusio");
 
                 selectorBeforMenu.parentNode.insertBefore(listMenu, selectorBeforMenu.nextSibling);
 
                 const list = main.querySelectorAll(arg.selectors);
-                const menuList = main.querySelector(listType);
+                const menuList = document.getElementById("js-menusio");
 
                 for (let i = 0; i < list.length; i++) {
                     const link = document.createElement("a");
