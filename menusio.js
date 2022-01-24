@@ -9,7 +9,7 @@ var menusio = menusio || ((() => {
                     arg.selectorBeforMenu = "h1";
                 }
 
-                let selectorBeforMenu = main.querySelector(arg.selectorBeforMenu);
+                let selectorBeforMenu = document.querySelector(arg.selectorBeforMenu);
 
                 if (selectorBeforMenu === null) {
                     selectorBeforMenu = main.querySelector("h1");
