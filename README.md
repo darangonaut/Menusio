@@ -14,7 +14,9 @@ Creates menu with anchors in article from H2 headings
             article: "main", // name or id or class of the article element
             ordered: true,  // true or false
             selectors: "h2", // h2,h3,h4,h5,h6
-            selectorBeforMenu: "h1", 
+            selectorBeforMenu: "h1",
+            selectorLink: false, // selector as link, default true
+            existstingIds: true // use existing id, default false
         }
     );
 </script>

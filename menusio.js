@@ -2,6 +2,9 @@ var menusio = menusio || ((() => {
     return {
         build(arg) {
             const main = document.querySelector(arg.article);
+            const existingIds = typeof arg.existingIds === 'undefined' ? false : arg.existingIds;  // BC false
+            const selectorLink = typeof arg.selectorLink === 'undefined' ? true : arg.selectorLink;  // BC true
+
             if (main !== null) {
                 const listType = arg.ordered === true ? "ol" : "ul";
 
@@ -27,11 +30,18 @@ var menusio = menusio || ((() => {
                     const link = document.createElement("a");
                     const li = document.createElement("li");
 
-                    list[i].id = i + 1;
+                    if (!list[i].id || !existingIds) {
+                        list[i].id = i + 1;
+                    }
+
                     link.setAttribute("href", `#${list[i].id}`);
 
                     link.innerHTML = list[i].innerHTML;
-                    list[i].innerHTML = link.outerHTML;
+
+                    if (selectorLink) {
+                        // Header as link
+                        list[i].innerHTML = link.outerHTML;
+                    }
 
                     link.innerHTML = list[i].textContent;
                     li.appendChild(link);
