@@ -41,3 +41,4 @@ The `build` method takes an argument object with the following properties:
 - `selectorBeforMenu`: the CSS selector for an element to insert the menu before (defaults to `"h1"`)
 - `existingIds`: whether to use existing elements' IDs (`true`) or generate new ones (`false`) (defaults to `false`)
 - `selectorLink`: whether to replace the selected element's content with the link (`true`) or have the link appear next to the element (`false`) (defaults to `true`)
+- `classesNotInMenu`: an array of classes to exclude from the menu (defaults to `[]`)
