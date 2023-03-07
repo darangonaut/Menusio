@@ -4,6 +4,9 @@ var menusio = menusio || ((() => {
             const main = document.querySelector(arg.article);
             const existingIds = typeof arg.existingIds === 'undefined' ? false : arg.existingIds;  // BC false
             const selectorLink = typeof arg.selectorLink === 'undefined' ? true : arg.selectorLink;  // BC true
+            const classesNotInMenu = typeof arg.classesNotInMenu === 'undefined' ? [] : arg.classesNotInMenu;  // BC []
+
+            console.log(classesNotInMenu);
 
             if (main !== null) {
                 const listType = arg.ordered === true ? "ol" : "ul";
@@ -27,6 +30,20 @@ var menusio = menusio || ((() => {
                 const menuList = document.getElementById("js-menusio");
 
                 for (let i = 0; i < list.length; i++) {
+                    //if list hase any class in classesNotInMenu, continue
+                    if (classesNotInMenu.length > 0) {
+                        let hasClass = false;
+                        for (let j = 0; j < classesNotInMenu.length; j++) {
+                            if (list[i].classList.contains(classesNotInMenu[j])) {
+                                hasClass = true;
+                                break;
+                            }
+                        }
+                        if (hasClass) {
+                            continue;
+                        }
+                    }
+
                     const link = document.createElement("a");
                     const li = document.createElement("li");
 

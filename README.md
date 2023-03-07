@@ -27,7 +27,8 @@ Include the script in your HTML file and initialize menusio with the following c
             selectors: "h2", // h2,h3,h4,h5,h6
             selectorBeforMenu: "h1",
             selectorLink: false, // selector as link, default true
-            existingIds: true // use existing id, default false
+            existingIds: true, // use existing id, default false
+            classesNotInMenu: ["not-in-menu"] // classes not to be included in menu
         }
     );
 </script>
