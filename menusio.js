@@ -1,53 +1,45 @@
-var menusio = menusio || ((() => {
-    return {
-        build(arg) {
-            const main = document.querySelector(arg.article);
-            const existingIds = typeof arg.existingIds === 'undefined' ? false : arg.existingIds;  // BC false
-            const selectorLink = typeof arg.selectorLink === 'undefined' ? true : arg.selectorLink;  // BC true
+const menusio = (() => {
+    const build = (arg) => {
+        const { article, existingIds = false, selectorLink = true, classesNotInMenu = [], selectors, ordered } = arg;
 
-            if (main !== null) {
-                const listType = arg.ordered === true ? "ol" : "ul";
+        console.log(classesNotInMenu);
 
-                if (arg.selectorBeforMenu === null || arg.selectorBeforMenu === "" || arg.selectorBeforMenu === undefined) {
-                    arg.selectorBeforMenu = "h1";
-                }
+        const main = document.querySelector(article);
+        if (!main) return;
 
-                let selectorBeforMenu = document.querySelector(arg.selectorBeforMenu);
+        const listType = ordered ? "ol" : "ul";
 
-                if (selectorBeforMenu === null) {
-                    selectorBeforMenu = main.querySelector("h1");
-                }
+        let selectorBeforMenu = document.querySelector(arg.selectorBeforMenu) || main.querySelector("h1");
 
-                const listMenu = document.createElement(listType);
-                listMenu.setAttribute("id", "js-menusio");
+        const list = main.querySelectorAll(selectors);
 
-                selectorBeforMenu.parentNode.insertBefore(listMenu, selectorBeforMenu.nextSibling);
+        const menuList = document.createElement(listType);
+        menuList.setAttribute("id", "js-menusio");
+        selectorBeforMenu.parentNode.insertBefore(menuList, selectorBeforMenu.nextSibling);
 
-                const list = main.querySelectorAll(arg.selectors);
-                const menuList = document.getElementById("js-menusio");
+        for (let i = 0; i < list.length; i++) {
+            if (classesNotInMenu.some(className => list[i].classList.contains(className))) continue;
 
-                for (let i = 0; i < list.length; i++) {
-                    const link = document.createElement("a");
-                    const li = document.createElement("li");
+            const link = document.createElement("a");
+            const li = document.createElement("li");
 
-                    if (!list[i].id || !existingIds) {
-                        list[i].id = i + 1;
-                    }
-
-                    link.setAttribute("href", `#${list[i].id}`);
-
-                    link.innerHTML = list[i].innerHTML;
-
-                    if (selectorLink) {
-                        // Header as link
-                        list[i].innerHTML = link.outerHTML;
-                    }
-
-                    link.innerHTML = list[i].textContent;
-                    li.appendChild(link);
-                    menuList.appendChild(li);
-                }
+            if (!list[i].id || !existingIds) {
+                list[i].id = i + 1;
             }
+
+            link.setAttribute("href", `#${list[i].id}`);
+
+            link.textContent = list[i].textContent;
+
+            if (selectorLink) {
+                list[i].innerHTML = link.outerHTML;
+            }
+
+            li.appendChild(link);
+            menuList.appendChild(li);
         }
-    };
-})());
+    }
+
+    return { build };
+})();
+
