@@ -1,21 +1,28 @@
 const menusio = (() => {
     const build = (arg) => {
-        const { article, existingIds = false, selectorLink = true, classesNotInMenu = [], selectors, ordered } = arg;
+        const { article, existingIds = false, selectorLink = true, classesNotInMenu = [], selectors, ordered, minItems = 0 } = arg;
 
-        console.log(classesNotInMenu);
+        // Typo fix
+        if (!arg.selectorBeforeMenu && arg.selectorBeforMenu) {
+            console.error('Menusio: Don\'t use selectorBeforMenu. Use selectorBeforeMenu instead');
+        }
 
         const main = document.querySelector(article);
         if (!main) return;
 
         const listType = ordered ? "ol" : "ul";
 
-        let selectorBeforMenu = document.querySelector(arg.selectorBeforMenu) || main.querySelector("h1");
+        let selectorBeforeMenu = document.querySelector(arg.selectorBeforeMenu || arg.selectorBeforMenu) || main.querySelector("h1");
 
         const list = main.querySelectorAll(selectors);
 
+        if (list.length < minItems) {
+            return;
+        }
+
         const menuList = document.createElement(listType);
         menuList.setAttribute("id", "js-menusio");
-        selectorBeforMenu.parentNode.insertBefore(menuList, selectorBeforMenu.nextSibling);
+        selectorBeforeMenu.parentNode.insertBefore(menuList, selectorBeforeMenu.nextSibling);
 
         for (let i = 0; i < list.length; i++) {
             if (classesNotInMenu.some(className => list[i].classList.contains(className))) continue;
@@ -42,4 +49,3 @@ const menusio = (() => {
 
     return { build };
 })();
-

@@ -25,10 +25,11 @@ Include the script in your HTML file and initialize menusio with the following c
             article: "main", // name or id or class of the article element
             ordered: true,  // true or false
             selectors: "h2", // h2,h3,h4,h5,h6
-            selectorBeforMenu: "h1",
+            selectorBeforeMenu: "h1",
             selectorLink: false, // selector as link, default true
             existingIds: true, // use existing id, default false
-            classesNotInMenu: ["not-in-menu"] // classes not to be included in menu
+            classesNotInMenu: ["not-in-menu"], // classes not to be included in menu
+            minItems: 2 // display menu for 2 or more items
         }
     );
 </script>
@@ -38,7 +39,8 @@ The `build` method takes an argument object with the following properties:
 - `article`: the main element to search for selected elements in (defaults to `document`)
 - `selectors`: the CSS selector(s) for the elements to be used in the menu
 - `ordered`: whether to use ordered (`true`) or unordered (`false`) lists for the menu (defaults to `false`)
-- `selectorBeforMenu`: the CSS selector for an element to insert the menu before (defaults to `"h1"`)
+- `selectorBeforeMenu`: the CSS selector for an element to insert the menu before (defaults to `"h1"`)
 - `existingIds`: whether to use existing elements' IDs (`true`) or generate new ones (`false`) (defaults to `false`)
 - `selectorLink`: whether to replace the selected element's content with the link (`true`) or have the link appear next to the element (`false`) (defaults to `true`)
 - `classesNotInMenu`: an array of classes to exclude from the menu (defaults to `[]`)
+- `minItems`: if there are less than `minItems` items in the list, the menu will not be displayed (defaults to `0`)
