@@ -15,8 +15,13 @@ const menusio = (() => {
         let selectorBeforeMenu = document.querySelector(arg.selectorBeforeMenu || arg.selectorBeforMenu) || main.querySelector("h1");
 
         const list = main.querySelectorAll(selectors);
+        const items = [];
+        for (let i = 0; i < list.length; i++) {
+            if (classesNotInMenu.some(className => list[i].classList.contains(className))) continue;
+            items.push(list[i]);
+        }
 
-        if (list.length < minItems) {
+        if (items.length < minItems) {
             return;
         }
 
@@ -24,22 +29,20 @@ const menusio = (() => {
         menuList.setAttribute("id", "js-menusio");
         selectorBeforeMenu.parentNode.insertBefore(menuList, selectorBeforeMenu.nextSibling);
 
-        for (let i = 0; i < list.length; i++) {
-            if (classesNotInMenu.some(className => list[i].classList.contains(className))) continue;
-
+        for (let i = 0; i < items.length; i++) {
             const link = document.createElement("a");
             const li = document.createElement("li");
 
-            if (!list[i].id || !existingIds) {
-                list[i].id = i + 1;
+            if (!items[i].id || !existingIds) {
+                items[i].id = i + 1;
             }
 
-            link.setAttribute("href", `#${list[i].id}`);
+            link.setAttribute("href", `#${items[i].id}`);
 
-            link.textContent = list[i].textContent;
+            link.textContent = items[i].textContent;
 
             if (selectorLink) {
-                list[i].innerHTML = link.outerHTML;
+                items[i].innerHTML = link.outerHTML;
             }
 
             li.appendChild(link);
