@@ -32,9 +32,10 @@ const menusio = (() => {
         for (let i = 0; i < items.length; i++) {
             const link = document.createElement("a");
             const li = document.createElement("li");
+            const id = items[i].textContent.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
 
             if (!items[i].id || !existingIds) {
-                items[i].id = i + 1;
+                items[i].id = id;
             }
 
             link.setAttribute("href", `#${items[i].id}`);
