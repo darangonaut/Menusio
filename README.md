@@ -1,46 +1,209 @@
 # Menusio
 
-A JavaScript library for creating a menu from selected elements on a web page. 
+Moderní JavaScriptová knihovna pro automatické generování obsahu (table of contents) z vybraných HTML elementů.
 
-## Features
-- Supports both ordered and unordered lists as menus
-- Can create menu links either before or after the selected elements
-- Option to use existing elements' IDs or generate new ones
-- Option to either replace the selected element's content with the link or have the link appear next to the element
+## 🚀 Hlavní funkce
 
-## Usage
+- ✅ Podpora číslovaných i nečíslovaných seznamů
+- ✅ Automatické generování ID z textu nadpisů
+- ✅ Vyloučení vybraných elementů z menu pomocí CSS tříd
+- ✅ Minimální počet položek pro zobrazení menu
+- ✅ Přístupnost (ARIA atributy)
+- ✅ Moderní ES6+ syntaxe
+- ✅ Kompletní error handling
+- ✅ Responzivní design
+- ✅ Dark mode podpora
 
-Include the script in your HTML file and initialize menusio with the following code:
+## 📦 Instalace
 
-``` html
+### Přímé vložení
+
+```html
+<script src="menusio.js"></script>
+```
+
+### CDN
+
+```html
 <script src="https://cdn.jsdelivr.net/gh/darangonaut/Menusio@master/menusio.js"></script>
 ```
 
-``` html
+## 🔧 Základní použití
 
-<script src="menusio.js"></script>
-<script type="text/javascript">
-    menusio.build(
-        {
-            article: "main", // name or id or class of the article element
-            ordered: true,  // true or false
-            selectors: "h2", // h2,h3,h4,h5,h6
-            selectorBeforeMenu: "h1",
-            selectorLink: false, // selector as link, default true
-            existingIds: true, // use existing id, default false
-            classesNotInMenu: ["not-in-menu"], // classes not to be included in menu
-            minItems: 2 // display menu for 2 or more items
-        }
-    );
+```html
+<script>
+    menusio.build({
+        article: "main",              // Kontejner s obsahem
+        selectors: "h2",              // Selektory pro nadpisy
+        ordered: true,                // Číslovaný seznam
+        selectorBeforeMenu: "h1",     // Kam vložit menu
+    });
 </script>
 ```
 
-The `build` method takes an argument object with the following properties:
-- `article`: the main element to search for selected elements in (defaults to `document`)
-- `selectors`: the CSS selector(s) for the elements to be used in the menu
-- `ordered`: whether to use ordered (`true`) or unordered (`false`) lists for the menu (defaults to `false`)
-- `selectorBeforeMenu`: the CSS selector for an element to insert the menu before (defaults to `"h1"`)
-- `existingIds`: whether to use existing elements' IDs (`true`) or generate new ones (`false`) (defaults to `false`)
-- `selectorLink`: whether to replace the selected element's content with the link (`true`) or have the link appear next to the element (`false`) (defaults to `true`)
-- `classesNotInMenu`: an array of classes to exclude from the menu (defaults to `[]`)
-- `minItems`: if there are less than `minItems` items in the list, the menu will not be displayed (defaults to `0`)
+## ⚙️ Konfigurace
+
+### Všechny parametry
+
+```javascript
+menusio.build({
+    // Povinné parametry
+    article: "main",                    // CSS selektor kontejneru
+    selectors: "h2, h3",                // Selektory nadpisů pro menu
+    
+    // Volitelné parametry
+    ordered: false,                     // true = <ol>, false = <ul>
+    selectorBeforeMenu: "h1",           // Místo pro vložení menu
+    existingIds: false,                 // Použít existující ID
+    selectorLink: true,                 // Převést nadpis na odkaz
+    classesNotInMenu: ["skip"],         // Třídy k vyloučení
+    minItems: 2,                        // Min. počet položek pro zobrazení
+});
+```
+
+### Popis parametrů
+
+| Parametr | Typ | Výchozí | Popis |
+|----------|-----|---------|-------|
+| `article` | string | - | **Povinný.** CSS selektor hlavního kontejneru |
+| `selectors` | string | - | **Povinný.** CSS selektory pro nadpisy (např. "h2, h3") |
+| `ordered` | boolean | false | Typ seznamu (true = číslovaný, false = odrážkový) |
+| `selectorBeforeMenu` | string | "h1" | Selektor elementu, za který se vloží menu |
+| `existingIds` | boolean | false | Použít existující ID místo generování nových |
+| `selectorLink` | boolean | true | Převést nadpisy na odkazy |
+| `classesNotInMenu` | array | [] | Pole CSS tříd, které se mají vyloučit z menu |
+| `minItems` | number | 0 | Minimální počet položek pro zobrazení menu |
+
+## 📝 Příklady použití
+
+### Základní menu z H2 nadpisů
+
+```javascript
+menusio.build({
+    article: "#content",
+    selectors: "h2"
+});
+```
+
+### Hierarchické menu (H2 a H3)
+
+```javascript
+menusio.build({
+    article: "article",
+    selectors: "h2, h3",
+    ordered: true
+});
+```
+
+### S vyloučením některých nadpisů
+
+```javascript
+menusio.build({
+    article: "main",
+    selectors: "h2",
+    classesNotInMenu: ["no-toc", "skip-menu"]
+});
+```
+
+```html
+<h2>Tento nadpis bude v menu</h2>
+<h2 class="no-toc">Tento ne</h2>
+```
+
+### Zobrazit jen při více než 3 položkách
+
+```javascript
+menusio.build({
+    article: "article",
+    selectors: "h2",
+    minItems: 4
+});
+```
+
+### Zachování existujících ID
+
+```javascript
+menusio.build({
+    article: "main",
+    selectors: "h2",
+    existingIds: true
+});
+```
+
+## 🎨 Styling
+
+Menu má ID `js-menusio`, které můžete stylovat:
+
+```css
+#js-menusio {
+    background-color: #f8f9fa;
+    border-left: 3px solid #007bff;
+    padding: 1.5rem;
+    border-radius: 4px;
+}
+
+#js-menusio a {
+    color: #333;
+    text-decoration: none;
+}
+
+#js-menusio a:hover {
+    color: #007bff;
+}
+```
+
+## 🔨 API
+
+### `menusio.build(config)`
+
+Vytvoří menu podle konfigurace.
+
+**Parametry:**
+- `config` (Object) - Objekt s konfigurací
+
+**Vrací:**
+- `undefined`
+
+**Výjimky:**
+- Vyhodí chybu při chybějících povinných parametrech
+
+### `menusio.destroy()`
+
+Odstraní vygenerované menu ze stránky.
+
+```javascript
+// Odstranění menu
+menusio.destroy();
+```
+
+## 🐛 Debugging
+
+Knihovna loguje informace do konzole:
+
+- ✅ **Info** - úspěšné vytvoření menu
+- ⚠️ **Warning** - element nebyl nalezen, nedostatek položek
+- ❌ **Error** - nevalidní konfigurace
+
+## 🌐 Kompatibilita prohlížečů
+
+- Chrome/Edge 88+
+- Firefox 78+
+- Safari 14+
+- Opera 74+
+
+Vyžaduje podporu:
+- ES6+ (arrow funkce, const/let, template literals)
+- Array.from(), Array.forEach()
+- querySelector(), querySelectorAll()
+
+## 📄 Licence
+
+MIT License
+
+## 🤝 Přispívání
+
+Pull requesty jsou vítány! Pro větší změny prosím nejdříve otevřete issue.
+
+## 📞 Podpora
+
+Pokud najdete bug nebo máte nápad na vylepšení, vytvořte prosím issue na GitHubu.

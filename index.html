@@ -1,62 +1,114 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="cs">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menusio - Demo stránka</title>
+    
+    <!-- Styly -->
     <link rel="stylesheet" href="https://unpkg.com/marx-css/css/marx.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <main>
-        <div id="js-main-content">
+        <article id="js-main-content">
             <h1>Pariatur magni non dolorem, atque impedit obcaecati dolorum!</h1>
-            <h2>Nam non gravida nulla. Curabitur</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=1" alt="random image 1">
-            <h2>Donec rhoncus eget tortor nec</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=2" alt="random image 2">
-            <h2>Aliquam tempor ex non lacus</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=3" alt="random image 3">
-            <h2>Nunc a augue quis nisl</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=4" alt="random image 4">
-            <h2 class="js-menusio-dont">Dont Nunc a augue quis nisl</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=4" alt="random image 4">
-            <h2>Aenean tristique sollicitudin lacus</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=5" alt="random image 5">
-            <h2>Renean tristique sollicitudin lacus</h2>
-            <p></p>
-            <img src="https://picsum.photos/600/200?grayscale&random=6" alt="random image 6">
-            <h3>Xenean tristique sollicitudin</h3>
-            <p></p>
-            <h3>Uenean tristique sollicitudin</h3>
-            <p></p>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-            <h2>Penean tristique sollicitudin lacus</h2>
-            <p></p>
-        </div>
+            
+            <!-- Menu se vygeneruje zde automaticky -->
+            
+            <section>
+                <h2>Nam non gravida nulla. Curabitur</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=1" 
+                     alt="Náhodný ilustrační obrázek 1" 
+                     loading="lazy">
+            </section>
+            
+            <section>
+                <h2>Donec rhoncus eget tortor nec</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=2" 
+                     alt="Náhodný ilustrační obrázek 2" 
+                     loading="lazy">
+            </section>
+            
+            <section>
+                <h2>Aliquam tempor ex non lacus</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=3" 
+                     alt="Náhodný ilustrační obrázek 3" 
+                     loading="lazy">
+            </section>
+            
+            <section>
+                <h2>Nunc a augue quis nisl</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=4" 
+                     alt="Náhodný ilustrační obrázek 4" 
+                     loading="lazy">
+            </section>
+            
+            <section>
+                <h2 class="js-menusio-dont">Dont Nunc a augue quis nisl</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=5" 
+                     alt="Náhodný ilustrační obrázek 5" 
+                     loading="lazy">
+            </section>
+            
+            <section>
+                <h2>Aenean tristique sollicitudin lacus</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=6" 
+                     alt="Náhodný ilustrační obrázek 6" 
+                     loading="lazy">
+            </section>
+            
+            <section>
+                <h2>Renean tristique sollicitudin lacus</h2>
+                <p></p>
+                <img src="https://picsum.photos/600/200?grayscale&random=7" 
+                     alt="Náhodný ilustrační obrázek 7" 
+                     loading="lazy">
+                
+                <h3>Xenean tristique sollicitudin</h3>
+                <p></p>
+                
+                <h3>Uenean tristique sollicitudin</h3>
+                <p></p>
+                
+                <ul>
+                    <li>První položka</li>
+                    <li>Druhá položka</li>
+                    <li>Třetí položka</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2>Penean tristique sollicitudin lacus</h2>
+                <p></p>
+            </section>
+        </article>
     </main>
+
+    <!-- Skripty -->
+    <script src="menusio-p.js"></script>
+    <script src="menusio.js"></script>
+    <script>
+        // Inicializace Menusio
+        document.addEventListener('DOMContentLoaded', () => {
+            menusio.build({
+                article: "#js-main-content",
+                ordered: true,
+                selectors: "h2",
+                selectorBeforeMenu: "h1",
+                classesNotInMenu: ["js-menusio-dont"],
+                minItems: 2,
+                selectorLink: true,
+                existingIds: false
+            });
+        });
+    </script>
 </body>
-
-<script src="menusio-p.js "></script>
-<script src="menusio.js "></script>
-<script type="text/javascript">
-    menusio.build(
-        {
-            article: "main", // name or id or class of the article element
-            ordered: true,  // true or false
-            selectors: "h2", // h2,h3,h4,h5,h6
-            selectorBeforeMenu: "h1",
-            classesNotInMenu: ["js-menusio-dont"], // class name
-        }
-    );
-</script>
-
 </html>
