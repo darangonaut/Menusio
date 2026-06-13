@@ -30,7 +30,7 @@ const menusio = (() => {
         if (!config.selectors) {
             throw new Error('Menusio: Parametr "selectors" je povinný');
         }
-        
+
         // Kontrola zastaralého parametru
         if (config.selectorBeforMenu) {
             console.warn('Menusio: Parametr "selectorBeforMenu" je zastaralý. Použijte "selectorBeforeMenu"');
@@ -42,56 +42,143 @@ const menusio = (() => {
      * @param {Element} container - Kontejnerový element
      * @param {string} selectors - CSS selektory
      * @param {Array<string>} excludeClasses - Třídy k vyloučení
-     * @returns {Array<Element>} - Pole elementů
+     * @returns {Array<Element>} - Pole elementů v pořadí dokumentu
      */
     const findMenuItems = (container, selectors, excludeClasses = []) => {
         const elements = container.querySelectorAll(selectors);
-        
-        return Array.from(elements).filter(el => 
+
+        return Array.from(elements).filter(el =>
             !excludeClasses.some(className => el.classList.contains(className))
         );
     };
 
     /**
-     * Vytvoří položku menu
+     * Zjistí úroveň nadpisu z názvu tagu (h2 -> 2). Pro ne-nadpisy vrací null.
+     * @param {Element} el
+     * @returns {number|null}
+     */
+    const headingLevel = (el) => {
+        const match = el.tagName.match(/^H([1-6])$/);
+        return match ? Number(match[1]) : null;
+    };
+
+    /**
+     * Zajistí unikátní ID elementu (řeší kolize i prázdné slugy).
+     * @param {Element} element
+     * @param {boolean} useExistingId
+     * @param {Set<string>} usedIds - Již použitá ID v rámci tohoto menu
+     * @param {number} index - Pořadí položky (fallback pro prázdný slug)
+     * @returns {string} - Přiřazené unikátní ID
+     */
+    const ensureUniqueId = (element, useExistingId, usedIds, index) => {
+        const base = (useExistingId && element.id)
+            ? element.id
+            : createSlug(element.textContent) || `menusio-${index + 1}`;
+
+        let unique = base;
+        let counter = 2;
+        // Vyhneme se kolizi jak v rámci menu, tak s existujícím ID na stránce
+        while (usedIds.has(unique) || (unique !== element.id && document.getElementById(unique))) {
+            unique = `${base}-${counter++}`;
+        }
+
+        usedIds.add(unique);
+        element.id = unique;
+        return unique;
+    };
+
+    /**
+     * Vytvoří položku menu (<li> s odkazem)
      * @param {Element} element - Element nadpisu
      * @param {boolean} useExistingId - Použít existující ID
      * @param {boolean} makeSelectorLink - Převést nadpis na odkaz
+     * @param {Set<string>} usedIds
+     * @param {number} index
      * @returns {Element} - Li element s odkazem
      */
-    const createMenuItem = (element, useExistingId, makeSelectorLink) => {
+    const createMenuItem = (element, useExistingId, makeSelectorLink, usedIds, index) => {
         const li = document.createElement("li");
         const link = document.createElement("a");
-        
-        // Nastavení ID elementu
-        if (!element.id || !useExistingId) {
-            element.id = createSlug(element.textContent);
-        }
-        
-        // Nastavení odkazu
-        link.href = `#${element.id}`;
+
+        const id = ensureUniqueId(element, useExistingId, usedIds, index);
+        link.href = `#${id}`;
         link.textContent = element.textContent;
-        
-        // Pokud má být nadpis odkaz
+
         if (makeSelectorLink) {
+            // Nadpis se stane odkazem na sebe sama; do menu jde kopie
             element.innerHTML = "";
             element.appendChild(link);
+            li.appendChild(link.cloneNode(true));
+        } else {
+            li.appendChild(link);
         }
-        
-        li.appendChild(link.cloneNode(true));
+
         return li;
+    };
+
+    /**
+     * Sestaví seznam menu. Pokud jsou všechny položky nadpisy a mají různé
+     * úrovně, vytvoří vnořený (hierarchický) seznam; jinak plochý.
+     * @param {Array<Element>} items
+     * @param {boolean} ordered
+     * @param {boolean} useExistingId
+     * @param {boolean} makeSelectorLink
+     * @returns {Element} - Kořenový <ul>/<ol>
+     */
+    const buildList = (items, ordered, useExistingId, makeSelectorLink) => {
+        const listTag = ordered ? "ol" : "ul";
+        const usedIds = new Set();
+        const levels = items.map(headingLevel);
+        const useNesting = levels.every(l => l !== null) && new Set(levels).size > 1;
+
+        const root = document.createElement(listTag);
+
+        if (!useNesting) {
+            items.forEach((el, i) => {
+                root.appendChild(createMenuItem(el, useExistingId, makeSelectorLink, usedIds, i));
+            });
+            return root;
+        }
+
+        // Hierarchické vnořování podle úrovně nadpisu
+        const baseLevel = Math.min(...levels);
+        const stack = [{ level: baseLevel, list: root }];
+
+        items.forEach((el, i) => {
+            const level = levels[i];
+            const li = createMenuItem(el, useExistingId, makeSelectorLink, usedIds, i);
+
+            // Vynoříme se na mělčí úrovně
+            while (stack.length > 1 && level < stack[stack.length - 1].level) {
+                stack.pop();
+            }
+
+            let top = stack[stack.length - 1];
+
+            // Zanoříme se hlouběji – nový podseznam do poslední položky
+            if (level > top.level) {
+                const sub = document.createElement(listTag);
+                const parentLi = top.list.lastElementChild;
+                (parentLi || top.list).appendChild(sub);
+                stack.push({ level, list: sub });
+                top = stack[stack.length - 1];
+            }
+
+            top.list.appendChild(li);
+        });
+
+        return root;
     };
 
     /**
      * Vytvoří a vloží menu do stránky
      * @param {Object} config - Konfigurace menu
+     * @returns {Element|undefined} - Vytvořený <nav> nebo undefined
      */
     const build = (config) => {
         try {
-            // Validace
             validateConfig(config);
 
-            // Destrukturalizace s výchozími hodnotami
             const {
                 article,
                 selectors,
@@ -104,25 +191,21 @@ const menusio = (() => {
                 selectorBeforMenu // zastaralý parametr
             } = config;
 
-            // Najít hlavní kontejner
             const container = document.querySelector(article);
             if (!container) {
                 console.warn(`Menusio: Element "${article}" nebyl nalezen`);
                 return;
             }
 
-            // Najít elementy pro menu
             const items = findMenuItems(container, selectors, classesNotInMenu);
-            
-            // Kontrola minimálního počtu položek
+
             if (items.length < minItems) {
                 console.info(`Menusio: Nalezeno pouze ${items.length} položek, minimum je ${minItems}`);
                 return;
             }
 
-            // Najít element před kterým se vloží menu
             const insertBeforeSelector = selectorBeforeMenu || selectorBeforMenu;
-            const anchorElement = insertBeforeSelector 
+            const anchorElement = insertBeforeSelector
                 ? document.querySelector(insertBeforeSelector)
                 : container.querySelector("h1");
 
@@ -131,25 +214,18 @@ const menusio = (() => {
                 return;
             }
 
-            // Vytvoření menu
-            const menuList = document.createElement(ordered ? "ol" : "ul");
-            menuList.id = "js-menusio";
-            menuList.setAttribute("role", "navigation");
-            menuList.setAttribute("aria-label", "Obsah stránky");
+            const list = buildList(items, ordered, existingIds, selectorLink);
 
-            // Vytvoření položek menu
-            const fragment = document.createDocumentFragment();
-            items.forEach(item => {
-                const menuItem = createMenuItem(item, existingIds, selectorLink);
-                fragment.appendChild(menuItem);
-            });
+            // Sémantický wrapper <nav> kvůli přístupnosti
+            const nav = document.createElement("nav");
+            nav.id = "js-menusio";
+            nav.setAttribute("aria-label", "Obsah stránky");
+            nav.appendChild(list);
 
-            menuList.appendChild(fragment);
-
-            // Vložení menu do stránky
-            anchorElement.parentNode.insertBefore(menuList, anchorElement.nextSibling);
+            anchorElement.parentNode.insertBefore(nav, anchorElement.nextSibling);
 
             console.info(`Menusio: Menu úspěšně vytvořeno s ${items.length} položkami`);
+            return nav;
 
         } catch (error) {
             console.error("Menusio:", error.message);
