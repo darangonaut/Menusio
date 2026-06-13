@@ -21,6 +21,12 @@ html {
     border-radius: 4px;
 }
 
+#js-menusio ul,
+#js-menusio ol {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+}
+
 #js-menusio li {
     padding-left: 1rem;
     margin-bottom: 0.5rem;

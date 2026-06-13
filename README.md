@@ -1,14 +1,15 @@
 # Menusio
 
-Moderní JavaScriptová knihovna pro automatické generování obsahu (table of contents) z vybraných HTML elementů.
+**v2.0.0** · Moderní JavaScriptová knihovna pro automatické generování obsahu (table of contents) z vybraných HTML elementů.
 
 ## 🚀 Hlavní funkce
 
 - ✅ Podpora číslovaných i nečíslovaných seznamů
-- ✅ Automatické generování ID z textu nadpisů
+- ✅ **Hierarchické (vnořené) menu** podle úrovně nadpisů (h2 → h3 → …)
+- ✅ Automatické generování ID z textu nadpisů (s ošetřením kolizí)
 - ✅ Vyloučení vybraných elementů z menu pomocí CSS tříd
 - ✅ Minimální počet položek pro zobrazení menu
-- ✅ Přístupnost (ARIA atributy)
+- ✅ Přístupnost (`<nav>` wrapper + ARIA)
 - ✅ Moderní ES6+ syntaxe
 - ✅ Kompletní error handling
 - ✅ Responzivní design
@@ -25,6 +26,10 @@ Moderní JavaScriptová knihovna pro automatické generování obsahu (table of 
 ### CDN
 
 ```html
+<!-- Doporučeno: připnout na verzi (stabilní) -->
+<script src="https://cdn.jsdelivr.net/gh/darangonaut/Menusio@v2.0.0/menusio.js"></script>
+
+<!-- Nebo vždy nejnovější z master (nevhodné pro produkci) -->
 <script src="https://cdn.jsdelivr.net/gh/darangonaut/Menusio@master/menusio.js"></script>
 ```
 
@@ -87,10 +92,12 @@ menusio.build({
 
 ### Hierarchické menu (H2 a H3)
 
+Když selektory zachytí nadpisy více úrovní, menu se automaticky **vnoří** — každý `h3` se vloží jako podseznam pod předcházející `h2` (a tak dál pro hlubší úrovně). Funguje jen pro skutečné nadpisy `h1`–`h6`; pro jiné selektory zůstává seznam plochý.
+
 ```javascript
 menusio.build({
     article: "article",
-    selectors: "h2, h3",
+    selectors: "h2, h3",   // h3 se vnoří pod h2
     ordered: true
 });
 ```
@@ -183,6 +190,10 @@ Knihovna loguje informace do konzole:
 - ✅ **Info** - úspěšné vytvoření menu
 - ⚠️ **Warning** - element nebyl nalezen, nedostatek položek
 - ❌ **Error** - nevalidní konfigurace
+
+## 🧪 Demo
+
+`index.html` obsahuje ukázku. Soubor `menusio-p.js` je **pouze pomocník pro demo** — naplní prázdné `<p>` lorem ipsum textem. Spustí se jen na stránce s atributem `<body data-menusio-demo>`, takže ho omylem nezahrnete do produkce. **Není součástí knihovny**, do svých stránek ho nelinkujte.
 
 ## 🌐 Kompatibilita prohlížečů
 
