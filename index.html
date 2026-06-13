@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body data-menusio-demo>
     <main>
         <article id="js-main-content">
             <h1>Pariatur magni non dolorem, atque impedit obcaecati dolorum!</h1>
@@ -101,7 +101,7 @@
             menusio.build({
                 article: "#js-main-content",
                 ordered: true,
-                selectors: "h2",
+                selectors: "h2, h3",        // h3 se vnoří pod své h2
                 selectorBeforeMenu: "h1",
                 classesNotInMenu: ["js-menusio-dont"],
                 minItems: 2,
